@@ -1,0 +1,29 @@
+.modal-button{
+	border-radius: 5px;
+	padding: 4px;
+	border:none;
+	outline: none;
+	width:20%!important;
+	font-size: 15px;
+	background-color: #C8C8C8;
+}
+.modal-button:hover{
+	color: #fff;
+	background-color: #953741;
+}
+.modal-close-button{
+	border:none;
+	opacity: 0.3;
+	width: 40px;
+}
+.modal-close-button:hover{
+	border:none;
+	opacity: 0.9
+}
+.modal-footer{
+	border-top: none!important;
+	padding: 0px!important
+}
+#modalLabel{
+	color: #953741
+}

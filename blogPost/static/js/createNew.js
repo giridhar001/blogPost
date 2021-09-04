@@ -1,3 +1,4 @@
+
 function triggerModal(){
 	$('#main_div').empty()
 	$('#createNew').modal('show')
@@ -10,7 +11,7 @@ function triggerModal(){
 	// 		</div>
 
 	var div_row = document.createElement('div');
-	div_row.setAttribute('id','row')
+	div_row.setAttribute('class','row g-1')
 	modal_body_div.appendChild(div_row);
 
 	// Name input section
@@ -67,6 +68,38 @@ function triggerModal(){
 	title_label.innerHTML = "Blog Title"
 	title_div.appendChild(title_label)
 
+	// Text Editor
 	
+	var toolbarOptions = [
+	  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+	  ['blockquote', 'code-block'],
+
+	  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+	  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+	  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+	  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+	  [{ 'direction': 'rtl' }],                         // text direction
+
+	  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+	  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+	  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+	  [{ 'font': [] }],
+	  [{ 'align': [] }],
+
+	  ['clean']                                         // remove formatting button
+	];
+
+	var quill = new Quill('#editor-container', {
+	  modules: {
+	    toolbar: toolbarOptions
+
+	  },
+	  placeholder: 'Compose ...',
+	  theme: 'snow'  
+	});
+
 
 }
+
+

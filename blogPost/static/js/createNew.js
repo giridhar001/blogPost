@@ -112,15 +112,15 @@ function formSubmit(){
 
 	// If the name does'nt match the pattern then return 
 	if(! name_regex.test(name)){
-		return alert('name field should contain only characters')
+		return alert('Name field should contain only characters')
 	}
 	
 	if(! email_regex.test(email)){
-		return alert('email is not valid')
+		return alert('Email is not valid')
 	}
 
 	if(! title_regex.test(blog_title)){
-		return alert('title field should contain only characters and digits')
+		return alert('Title field should contain only characters and digits')
 	}
 
 	var blog_content = quill.root.innerHTML;
@@ -131,5 +131,40 @@ function formSubmit(){
 		'content':blog_content
 	}
 
-	console.log(data);
+	swal({
+          title: "Are you sure?",
+          text: "You will not be able to revert this action later!",
+          icon: "warning",
+          buttons: [
+            'No, cancel it!',
+            'Yes, I am sure!'
+          ],
+          dangerMode: true,
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+            swal({
+              title: 'Successfully Created!',
+              text: 'A new blog has been created',
+              icon: 'success'
+            }).then(function() {
+
+              console.log(data);
+              clearForm();
+              
+            });
+          } else {
+            swal("Cancelled", "Blog has not been created", "error");
+          }
+        });
+    
+
+	
+}
+
+function clearForm(){
+	$('#user-name').val("");
+	$('#user-email').val("");
+	$('#blog-title').val("");
+	quill.root.innerHTML = "";
+	$('#createNew').modal('hide');
 }

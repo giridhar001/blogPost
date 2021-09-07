@@ -110,25 +110,26 @@ function formSubmit(){
 	var title_regex = /^[a-z|A-Z\d\.-]+$/
 
 
-	// If the name does'nt match the pattern then return 
-	if(! name_regex.test(name)){
-		return alert('Name field should contain only characters')
-	}
+	// // If the name does'nt match the pattern then return 
+	// if(! name_regex.test(name)){
+	// 	return alert('Name field should contain only characters')
+	// }
 	
-	if(! email_regex.test(email)){
-		return alert('Email is not valid')
-	}
+	// if(! email_regex.test(email)){
+	// 	return alert('Email is not valid')
+	// }
 
-	if(! title_regex.test(blog_title)){
-		return alert('Title field should contain only characters and digits')
-	}
+	// if(! title_regex.test(blog_title)){
+	// 	return alert('Title field should contain only characters and digits')
+	// }
 
 	var blog_content = quill.root.innerHTML;
-	var data = {
+	var input_data = {
 		'name':name,
 		'email':email,
 		'title':blog_title,
-		'content':blog_content
+		'content':blog_content,
+		'csrfmiddlewaretoken': '{{ csrf_token }}'
 	}
 
 	swal({
@@ -148,9 +149,25 @@ function formSubmit(){
               icon: 'success'
             }).then(function() {
 
-              console.log(data);
+              // console.log(data);
               clearForm();
               
+             $.ajax({
+             	'url':'/home/',
+             	'type':'POST',
+             	'headers': { "X-CSRFToken": $.cookie("csrftoken") },
+             	'contentType': 'application/json',
+             	'data':{
+             		input_data:input_data
+             	},
+             	success:function(response){
+             		console.log(response)
+             	},
+             	// error:function(xhr, textStatus, error){
+             	// 	console.log(error)
+             	// }
+             })
+
             });
           } else {
             swal("Cancelled", "Blog has not been created", "error");

@@ -101,27 +101,27 @@ function triggerModal(){
 
 
 function formSubmit(){
-	name = $('#user-name').val();
-	email = $('#user-email').val();
-	blog_title = $('#blog-title').val();
+	name = $('#user-name').val().trim();
+	email = $('#user-email').val().trim();
+	blog_title = $('#blog-title').val().trim();
 
 	var name_regex = /^[a-z | A-Z]+$/
 	var email_regex = /^([a-z|A-Z\d\.-]+)@([a-z|A-Z\d-]+)\.([a-z|A-Z]{2,8})(\.[a-z|A-Z]{2,8})?$/
 	var title_regex = /^[a-z|A-Z\d\.-]+$/
 
 
-	// // If the name does'nt match the pattern then return 
-	// if(! name_regex.test(name)){
-	// 	return alert('Name field should contain only characters')
-	// }
+	// If the name does'nt match the pattern then return 
+	if(! name_regex.test(name)){
+		return alert('Name field should contain only characters')
+	}
 	
-	// if(! email_regex.test(email)){
-	// 	return alert('Email is not valid')
-	// }
+	if(! email_regex.test(email)){
+		return alert('Email is not valid')
+	}
 
-	// if(! title_regex.test(blog_title)){
-	// 	return alert('Title field should contain only characters and digits')
-	// }
+	if(! title_regex.test(blog_title)){
+		return alert('Title field should contain only characters and digits')
+	}
 
 	var blog_content = quill.root.innerHTML;
 	var input_data = {
@@ -131,7 +131,6 @@ function formSubmit(){
 		'content':blog_content,
 		'csrfmiddlewaretoken': '{{ csrf_token }}'
 	}
-
 	swal({
           title: "Are you sure?",
           text: "You will not be able to revert this action later!",
@@ -153,19 +152,17 @@ function formSubmit(){
               clearForm();
               
              $.ajax({
-             	'url':'/home/',
+             	'url':'/home/createPost/',
              	'type':'POST',
              	'headers': { "X-CSRFToken": $.cookie("csrftoken") },
-             	'contentType': 'application/json',
-             	'data':{
-             		input_data:input_data
-             	},
+             	'data':JSON.stringify({
+             		'input_data' : input_data
+             	}),
+             	'contentType': 'application/json; charset=utf-8',
              	success:function(response){
              		console.log(response)
              	},
-             	// error:function(xhr, textStatus, error){
-             	// 	console.log(error)
-             	// }
+             	
              })
 
             });

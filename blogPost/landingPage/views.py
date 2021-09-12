@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Create_new
 import json
 
 def landingPage(request):
@@ -19,10 +20,14 @@ def createPost(request):
 		blog_title = response['title'];
 		content = response['content'];
 
-		print(name);
-		print(email);
-		print(blog_title);
-		print(content);
-		
+		# print(name);
+		# print(email);
+		# print(blog_title);
+		# print(content);
+
+		#Store in the database 
+		response = Create_new(name = name, email=email, title = blog_title, content=content)
+		response.save()
+
 		return HttpResponse('success')
 

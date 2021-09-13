@@ -1,17 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-	
-	{% for blog in blogs %}
-		<!-- <p>{{ blog.name }}</p>
-		<p>{{ blog.email }}</p>
-		<p>{{ blog.title }}</p>
-		<p>{{ blog.content|safe }}</p> -->
+{% extends "../base.html" %}
+{% load static %}
 
-		
-	{% endfor %}
-</body>
-</html>
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/generic.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/landingPage.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/createNew.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/viewBlogs.css" %}">
+
+    <title>myBlog</title>
+{% endblock %}   
+
+{% block body %}
+  	<div class="container">
+		<div class="body blog_row row gx-0">
+			{% for blog in blogs %}
+				<div class="card col-sm-12 col-md-3 mb-2" onclick="modalView("{{ blog }}")">
+				  <div class="card-body">
+				    <h5 class="card-title">{{ blog.title }}</h5>
+				    <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-pen-nib"></i> {{ blog.name }}</h6>
+				    <!-- <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-at"></i> {{ blog.email }}</h6> -->
+				    <p class="card-text">{{ blog.content | safe }}</p>
+				  </div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %} 
+
+
+{% block script %}
+	<script src="{% static 'js/csrf.js' %}"></script>
+	<script src="{% static 'js/createNew.js' %}"></script>
+	<script src="{% static 'js/viewBlog.js' %}"></script>
+{% endblock %}

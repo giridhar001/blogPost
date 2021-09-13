@@ -152,7 +152,7 @@ function formSubmit(){
               clearForm();
               
              $.ajax({
-             	'url':'/home/createPost/',
+             	'url':'/createPost/',
              	'type':'POST',
              	'headers': { "X-CSRFToken": $.cookie("csrftoken") },
              	'data':JSON.stringify({

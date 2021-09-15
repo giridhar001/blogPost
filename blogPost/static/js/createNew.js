@@ -1,14 +1,11 @@
 
 function triggerModal(){
 	$('#main_div').empty()
+	$('.ql-editor').empty()
+	$('.ql-toolbar').remove()
 	$('#createNew').modal('show')
 
 	var modal_body_div = document.getElementById('main_div');
-
-	// <div class="g-input">
-	// 			  <input type="text" id="user-name" name="user-name" placeholder=" ">
-	// 			  <label for="user-name">Username</label>
-	// 		</div>
 
 	var div_row = document.createElement('div');
 	div_row.setAttribute('class','row g-1')
@@ -69,7 +66,7 @@ function triggerModal(){
 	title_div.appendChild(title_label)
 
 	// Text Editor
-	
+
 	var toolbarOptions = [
 	  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
 	  ['blockquote', 'code-block'],
@@ -90,7 +87,7 @@ function triggerModal(){
 	  ['clean']                                         // remove formatting button
 	];
 
-	var quill = new Quill('#editor-container', {
+	quill = new Quill('#editor-container', {
 	  modules: {
 	    toolbar: toolbarOptions
 
@@ -103,3 +100,85 @@ function triggerModal(){
 }
 
 
+function formSubmit(){
+	name = $('#user-name').val().trim();
+	email = $('#user-email').val().trim();
+	blog_title = $('#blog-title').val().trim();
+
+	var name_regex = /^[a-z | A-Z]+$/
+	var email_regex = /^([a-z|A-Z\d\.-]+)@([a-z|A-Z\d-]+)\.([a-z|A-Z]{2,8})(\.[a-z|A-Z]{2,8})?$/
+	var title_regex = /^[a-z|A-Z\d\.-]+$/
+
+
+	// If the name does'nt match the pattern then return 
+	if(! name_regex.test(name)){
+		return alert('Name field should contain only characters')
+	}
+	
+	if(! email_regex.test(email)){
+		return alert('Email is not valid')
+	}
+
+	if(! title_regex.test(blog_title)){
+		return alert('Title field should contain only characters and digits')
+	}
+
+	var blog_content = quill.root.innerHTML;
+	var input_data = {
+		'name':name,
+		'email':email,
+		'title':blog_title,
+		'content':blog_content,
+		'csrfmiddlewaretoken': '{{ csrf_token }}'
+	}
+	swal({
+          title: "Are you sure?",
+          text: "You will not be able to revert this action later!",
+          icon: "warning",
+          buttons: [
+            'No, cancel it!',
+            'Yes, I am sure!'
+          ],
+          dangerMode: true,
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+            swal({
+              title: 'Successfully Created!',
+              text: 'A new blog has been created',
+              icon: 'success'
+            }).then(function() {
+
+              // console.log(data);
+              clearForm();
+              
+             $.ajax({
+             	'url':'/createPost/',
+             	'type':'POST',
+             	'headers': { "X-CSRFToken": $.cookie("csrftoken") },
+             	'data':JSON.stringify({
+             		'input_data' : input_data
+             	}),
+             	'contentType': 'application/json; charset=utf-8',
+             	success:function(response){
+             		console.log(response)
+             	},
+             	
+             })
+
+            });
+          } else {
+            swal("Cancelled", "Blog has not been created", "error");
+          }
+        });
+    
+
+	
+}
+
+function clearForm(){
+	$('#user-name').val("");
+	$('#user-email').val("");
+	$('#blog-title').val("");
+	quill.root.innerHTML = "";
+	$('#createNew').modal('hide');
+}

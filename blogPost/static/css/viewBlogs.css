@@ -6,3 +6,9 @@
 	display: flex;
 	justify-content: space-between!important;
 }
+.infoDiv{
+	display: flex;
+	justify-content: end;
+	text-align: right!important; 
+	align-items: right; 
+}

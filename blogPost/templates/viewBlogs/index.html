@@ -1,0 +1,57 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/generic.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/landingPage.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/createNew.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/viewBlogs.css" %}">
+
+    <title>myBlog</title>
+{% endblock %}   
+
+{% block body %}
+  	<div class="container">
+		<div class="body blog_row row gx-0">
+			<div><button class="col-sm-12 col-md-6 generic-button mb-4" onclick="location.href='/'">Home</button></div>
+			{% for blog in blogs %}
+					<div class="card col-sm-12 col-md-3 mb-2" onclick="modalView('{{ blog.name }}','{{ blog.email }}','{{ blog.title }}','{{ blog.content|safe }}');">
+					  <div class="card-body">
+					    <h5 class="card-title">{{ blog.title }}</h5>
+					    <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-pen-nib"></i> {{ blog.name }}</h6>
+					    <!-- <h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-at"></i> {{ blog.email }}</h6> -->
+					    <p class="card-text">{{ blog.content|striptags|safe }}</p>
+					    <!-- <p class="card-text">{{ blog.content | safe }}</p> -->
+					  </div>
+					</div>
+			{% endfor %}
+
+		</div>
+	</div>
+	
+	<div class="modal fade" id="viewBlog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-xl" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="modalTitle"></h5>
+	        <button type="button" class="close modal-close-button" data-bs-dismiss="modal" aria-bs-label="Close"">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+			<div id="modalBody"></div>
+			<div class="modal-footer">
+	        	<button type="button" class="modal-button" data-bs-dismiss="modal" aria-bs-label="Close"">Close</button>
+	     	</div>	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+{% endblock %} 
+
+
+{% block script %}
+	<script src="{% static 'js/csrf.js' %}"></script>
+	<script src="{% static 'js/viewBlog.js' %}"></script>
+{% endblock %}
